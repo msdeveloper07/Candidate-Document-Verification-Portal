@@ -1,0 +1,59 @@
+# =============================================================
+#  Root .htaccess — flattened layout
+#
+#  The contents of public/ have been moved up here, so index.php
+#  and assets/ sit next to app/, config/ and .env.
+#
+#  That means the framework folders are inside the web root, so
+#  the deny block at the bottom is not optional: without it,
+#  /app/, /storage/ and /.env are all fetchable in a browser.
+# =============================================================
+
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Authorization headers
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    RewriteCond %{HTTP:x-xsrf-token} .
+    RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
+
+    # Static files stay in public/ — one copy, so an edit to a
+    # stylesheet can never leave a stale duplicate behind.
+    RewriteRule ^(assets/.+|robots\.txt|favicon\.ico)$ public/$1 [L]
+
+    # ---- Keep the framework out of reach --------------------
+    # These are real directories, so the !-d rule further down
+    # would otherwise let Apache serve them directly.
+    RewriteRule ^(app|bootstrap|config|database|resources|routes|storage|tests|vendor)(/|$) - [F,L]
+    RewriteRule ^(\.env.*|composer\.(json|lock)|artisan|package\.json|phpunit\.xml|README\.md)$ - [F,L]
+    # ---------------------------------------------------------
+
+    # Trailing slashes
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Front controller
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# Second layer, in case mod_rewrite is ever unavailable.
+<FilesMatch "^(\.env.*|composer\.(json|lock)|artisan|package\.json|phpunit\.xml)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+Options -Indexes

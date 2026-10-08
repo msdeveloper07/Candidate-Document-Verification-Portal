@@ -1,0 +1,589 @@
+/* ============================================================
+   Cyberbells LLC — candidate portal
+   ------------------------------------------------------------
+   Audience: a nurse on her phone, between shifts, assembling
+   credentials for the fourth time this year. She is not
+   auditing a file — she wants one answer: am I cleared yet?
+
+   So the page has one bold element, the clearance card, and
+   everything else is deliberately quiet and thumb-sized.
+   Shares the navy/brass tokens from app.css; adds no new hues.
+   ============================================================ */
+
+:root {
+  --c-ground:   #EFF3F7;
+  --c-rule:     #DFE7EF;
+  --c-quiet:    #64798F;
+
+  --tap:        48px;                 /* minimum comfortable target */
+  --c-shell:    min(620px, 100% - 2rem);
+}
+
+/* ---------- Shell ---------- */
+.portal-body {
+  background: var(--c-ground);
+  font-size: 16px;                     /* larger than the admin console */
+  line-height: 1.6;
+  padding-bottom: 5rem;
+}
+
+.portal-shell {
+  width: var(--c-shell);
+  margin-inline: auto;
+}
+
+.portal-stack > * + * { margin-top: 1rem; }
+
+/* ---------- Header ---------- */
+.portal-head {
+  background: var(--surface);
+  border-bottom: 1px solid var(--c-rule);
+  padding: .85rem 0;
+  margin-bottom: 1.25rem;
+}
+
+.portal-mark {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  min-width: 0;
+}
+
+.portal-mark .seal {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: var(--ink);
+  color: var(--brass-bright);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: .95rem;
+}
+
+.portal-mark .agency {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: .95rem;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+.portal-mark .kind {
+  font-family: var(--font-mono);
+  font-size: .64rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--c-quiet);
+}
+
+/* ============================================================
+   SIGNATURE — the clearance card
+   The only dark, only large element on the page. The brass fill
+   rises with real completion, so the card itself is the meter.
+   ============================================================ */
+.clearance {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-xl);
+  background: var(--ink);
+  color: #fff;
+  padding: 1.4rem 1.35rem 1.25rem;
+  box-shadow: var(--shadow-md);
+}
+
+/* The fill sits behind the content, height driven by inline style */
+.clearance-fill {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  background: linear-gradient(180deg, rgba(180,131,43,.30), rgba(180,131,43,.13));
+  border-top: 1px solid rgba(217,164,65,.45);
+  transition: height .5s cubic-bezier(.2,.7,.3,1);
+  pointer-events: none;
+}
+
+.clearance > *:not(.clearance-fill) { position: relative; }
+
+.clearance-id {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.55);
+  margin-bottom: 1.1rem;
+}
+
+.clearance-name {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  color: #fff;
+  text-transform: none;
+}
+
+/* The count is the thesis: set it big and in mono so it reads as a fact */
+.clearance-count {
+  display: flex;
+  align-items: baseline;
+  gap: .5rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+}
+.clearance-count .n     { font-size: 3.4rem; letter-spacing: -.04em; }
+.clearance-count .of    { font-size: 1.1rem; color: rgba(255,255,255,.5); }
+
+.clearance-state {
+  margin-top: .5rem;
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+.clearance-sub {
+  margin-top: .2rem;
+  font-size: .87rem;
+  color: rgba(255,255,255,.62);
+}
+
+/* Cleared: the card stops being a progress meter and becomes a statement */
+.clearance.is-cleared .clearance-fill { background: rgba(217,164,65,.22); }
+.clearance.is-cleared .clearance-state { color: var(--brass-bright); }
+
+/* Segmented rule — one notch per requirement, real data at a glance */
+.meter {
+  display: flex;
+  gap: 4px;
+  margin-top: 1.15rem;
+}
+.notch {
+  flex: 1;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(255,255,255,.16);
+  transition: background .25s ease;
+}
+.notch.done   { background: var(--brass-bright); }
+.notch.review { background: rgba(255,255,255,.48); }
+.notch.redo   { background: #E0776B; }
+
+/* ---------- Next up: the single next action ---------- */
+.nextup {
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+  width: 100%;
+  text-align: left;
+  padding: .95rem 1.05rem;
+  min-height: var(--tap);
+  background: var(--surface);
+  border: 1px solid var(--c-rule);
+  border-left: 3px solid var(--brass);
+  border-radius: var(--r-lg);
+  color: inherit;
+  cursor: pointer;
+  transition: border-color .14s ease, transform .14s ease;
+}
+.nextup:hover { border-color: var(--line-strong); border-left-color: var(--brass); }
+.nextup:active { transform: scale(.995); }
+
+.nextup .lead {
+  font-family: var(--font-mono);
+  font-size: .64rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--brass);
+}
+.nextup .what {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--ink);
+}
+.nextup .why { font-size: .85rem; color: var(--c-quiet); }
+.nextup .arrow { margin-left: auto; color: var(--c-quiet); flex-shrink: 0; }
+
+/* ---------- Requirement cards ---------- */
+.dossier { display: flex; flex-direction: column; gap: .6rem; }
+
+.sleeve {
+  background: var(--surface);
+  border: 1px solid var(--c-rule);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  transition: border-color .16s ease;
+}
+.sleeve.is-rejected { border-color: #EBC3BE; }
+.sleeve.is-approved { border-color: #C7E0D1; }
+
+.sleeve-head {
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+  width: 100%;
+  padding: .9rem 1rem;
+  min-height: var(--tap);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Status dot carries the state; the stamp carries the word */
+.sleeve-head .idx {
+  width: 30px; height: 30px;
+  flex-shrink: 0;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  border: 1.5px solid var(--c-rule);
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  color: var(--c-quiet);
+  background: var(--surface-alt);
+}
+.sleeve.is-approved .sleeve-head .idx {
+  background: var(--success); border-color: var(--success); color: #fff;
+}
+.sleeve.is-rejected .sleeve-head .idx {
+  background: var(--danger); border-color: var(--danger); color: #fff;
+}
+.sleeve.is-uploaded .sleeve-head .idx,
+.sleeve.is-under_review .sleeve-head .idx {
+  border-color: var(--brass); color: var(--brass);
+}
+
+.sleeve-head .title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: .98rem;
+  color: var(--ink);
+  line-height: 1.3;
+}
+.sleeve-head .desc {
+  font-size: .82rem;
+  color: var(--c-quiet);
+  margin-top: .1rem;
+}
+
+.sleeve-head .chev {
+  color: var(--c-quiet);
+  flex-shrink: 0;
+  transition: transform .2s ease;
+}
+.sleeve.open .sleeve-head .chev { transform: rotate(180deg); }
+
+.sleeve-body {
+  padding: 0 1rem 1.1rem;
+  border-top: 1px solid var(--c-rule);
+  padding-top: 1rem;
+}
+
+.sleeve .stamp { font-size: .68rem; padding: .22rem .5rem; }
+
+/* ---------- Guidance blocks ---------- */
+.instructions {
+  background: var(--surface-alt);
+  border-radius: var(--r-md);
+  padding: .8rem .9rem;
+  font-size: .88rem;
+  color: var(--text-muted);
+  margin-bottom: .85rem;
+}
+.instructions .eyebrow { display: block; margin-bottom: .2rem; color: var(--c-quiet); }
+
+.accepts {
+  font-size: .72rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--c-quiet);
+  margin-bottom: .8rem;
+}
+
+.reviewer-note {
+  background: var(--danger-soft);
+  border-left: 3px solid var(--danger);
+  border-radius: var(--r-md);
+  padding: .8rem .9rem;
+  font-size: .88rem;
+  color: #7C1A13;
+  margin-bottom: .85rem;
+}
+.reviewer-note .eyebrow { display: block; margin-bottom: .2rem; }
+.reviewer-note.is-neutral {
+  background: var(--surface-alt);
+  border-left-color: var(--line-strong);
+  color: var(--text-muted);
+}
+
+/* ---------- Current file ---------- */
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .75rem .85rem;
+  border: 1px solid var(--c-rule);
+  border-radius: var(--r-md);
+  background: var(--surface-alt);
+  margin-bottom: .85rem;
+}
+.file-row .glyph {
+  width: 34px; height: 34px;
+  flex-shrink: 0;
+  display: grid; place-items: center;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--c-rule);
+  color: var(--navy-500);
+}
+.file-row .fname {
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--ink);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.file-row .fmeta { font-size: .76rem; color: var(--c-quiet); }
+.file-row [data-file-state] { font-style: italic; }
+
+/* ---------- Drop zone ---------- */
+.dropzone {
+  display: block;
+  text-align: center;
+  padding: 1.5rem 1rem;
+  border: 1.5px dashed var(--line-strong);
+  border-radius: var(--r-lg);
+  background: var(--surface-alt);
+  cursor: pointer;
+  transition: border-color .15s ease, background .15s ease;
+}
+.dropzone:hover, .dropzone:focus-visible, .dropzone.is-dragging {
+  border-color: var(--brass);
+  background: var(--brass-soft);
+}
+.dropzone input[type="file"] { display: none; }
+.dropzone .icon { color: var(--brass); margin-bottom: .4rem; }
+.dropzone .primary {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: .95rem;
+  color: var(--ink);
+}
+.dropzone .secondary { font-size: .78rem; color: var(--c-quiet); margin-top: .15rem; }
+
+.upload-progress {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--c-rule);
+  overflow: hidden;
+  margin-top: .75rem;
+}
+.upload-progress .fill {
+  height: 100%;
+  width: 0;
+  background: var(--brass);
+  transition: width .2s ease;
+}
+
+/* ---------- References ---------- */
+.ref-block {
+  border: 1px solid var(--c-rule);
+  border-radius: var(--r-md);
+  padding: .9rem 1rem 1rem;
+  margin-bottom: .85rem;
+  background: var(--surface-alt);
+}
+.ref-block legend {
+  float: none; width: auto;
+  padding: 0 .45rem; margin-left: -.45rem;
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--brass);
+}
+.ref-block .form-control { background: var(--surface); }
+
+.phone-group { display: flex; gap: .4rem; }
+
+/* ---------- Submit ---------- */
+.finish {
+  background: var(--surface);
+  border: 1px solid var(--c-rule);
+  border-radius: var(--r-lg);
+  padding: 1.2rem;
+  text-align: center;
+}
+.finish h2 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: .3rem;
+}
+.finish p { font-size: .88rem; color: var(--c-quiet); margin-bottom: .9rem; }
+
+.btn-finish {
+  width: 100%;
+  min-height: var(--tap);
+  border: 0;
+  border-radius: var(--r-md);
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background .15s ease;
+}
+.btn-finish:hover:not(:disabled) { background: var(--navy-700); }
+.btn-finish:disabled { background: var(--c-rule); color: var(--c-quiet); cursor: not-allowed; }
+
+/* ---------- Centred pages: OTP, expired, done ---------- */
+.centre-page {
+  width: var(--c-shell);
+  margin: 2.5rem auto;
+}
+.centre-card {
+  background: var(--surface);
+  border: 1px solid var(--c-rule);
+  border-radius: var(--r-xl);
+  padding: 1.75rem 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+.centre-card h1 {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -.015em;
+  color: var(--ink);
+  margin-bottom: .4rem;
+}
+.centre-card .lede { font-size: .93rem; color: var(--c-quiet); margin-bottom: 1.25rem; }
+
+/* OTP digits — mono, generous, obviously six */
+.otp-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: .45rem;
+  margin: .25rem 0 1rem;
+}
+.otp-box {
+  aspect-ratio: 3 / 4;
+  width: 100%;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--ink);
+  border: 1.5px solid var(--c-rule);
+  border-radius: var(--r-md);
+  background: var(--surface-alt);
+  transition: border-color .12s ease, background .12s ease;
+}
+.otp-box:focus {
+  outline: none;
+  border-color: var(--brass);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px var(--brass-soft);
+}
+.otp-box.filled { border-color: var(--navy-300); background: var(--surface); }
+
+/* ---------- Trust strip ---------- */
+.trust {
+  display: flex;
+  gap: .55rem;
+  align-items: flex-start;
+  font-size: .8rem;
+  color: var(--c-quiet);
+  padding: .85rem 0 0;
+}
+.trust svg { flex-shrink: 0; margin-top: .1rem; color: var(--brass); }
+
+/* ---------- Sticky action bar (mobile) ---------- */
+.actionbar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 30;
+  background: rgba(255,255,255,.94);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--c-rule);
+  padding: .6rem 0 max(.6rem, env(safe-area-inset-bottom));
+}
+.actionbar .inner {
+  width: var(--c-shell);
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+}
+.actionbar .status { flex: 1; min-width: 0; }
+.actionbar .status .big {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: .95rem;
+  color: var(--ink);
+}
+.actionbar .status .small { font-size: .76rem; color: var(--c-quiet); }
+.actionbar .btn-finish { width: auto; padding-inline: 1.4rem; flex-shrink: 0; }
+
+/* ---------- Finished ---------- */
+.seal {
+  width: 74px; height: 74px;
+  margin: 0 auto 1rem;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: var(--brass-soft);
+  border: 2px solid var(--brass);
+  color: var(--brass);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+  :root { --c-shell: calc(100% - 1.5rem); }
+  .clearance-count .n { font-size: 2.9rem; }
+  .clearance { padding: 1.2rem 1.1rem 1.1rem; }
+  .otp-grid { gap: .3rem; }
+  .otp-box { font-size: 1.25rem; }
+  .file-row { flex-wrap: wrap; }
+}
+
+/* ---------- Quality floor ---------- */
+:where(a, button, input, textarea, select, .dropzone):focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    transition-duration: .001ms !important;
+  }
+}
+
+/* The sticky bar earns its place on phones, where the answer scrolls away.
+   On a desktop the clearance card and the finish card are both easy to reach. */
+@media (min-width: 861px) {
+  .actionbar { display: none; }
+  .portal-body { padding-bottom: 3rem; }
+}
+
+/* Marks a section the candidate may skip */
+.optional {
+  display: inline-block;
+  margin-left: .35rem;
+  padding: .1rem .38rem;
+  border: 1px solid var(--c-rule);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: .58rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--c-quiet);
+  vertical-align: middle;
+}
