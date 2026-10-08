@@ -1,4 +1,4 @@
-# Cyberbells LLC — Candidate Credentialing Portal
+# Candidate Credentialing Portal
 
 A Laravel portal that replaces email attachments for healthcare staffing agencies. The agency invites a candidate; the candidate opens one link,
 proves who they are with an OTP, and uploads each requested document. Everything
